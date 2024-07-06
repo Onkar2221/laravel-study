@@ -1,0 +1,359 @@
+# Laravel 
+
+-- It is a free open source & PHP web framework based on MVC architectural pattern.
+
+-- Uses = 1] Create Web App
+          2] Create APIs
+
+
+-- MVC Pattern  =  Model - View - Controller 
+
+-- Mode  =  Database -> SQL Queries
+-- View  =  HTML
+-- Controller = Business Logic -> Mediator between Model and view
+
+
+It's working on below principal = 
+
+. Separation of concern 
+. Code Organization
+  
+
+* Popular MVC Frameworks
+
+[ PHP MVC Framework ]   |    Other Programming MVC Framework
+
+1] Laravel                     1] Django & Flask (Python)
+2] Symfony                     2] Ruby on Rails  (Ruby)
+3] Codelgniter                 3] Express.js  ( js / Node.js )
+4] Yii                         4] ASP.NET  MVC  (ASP.net Core)
+5] CakePHP
+6] Zend Framework
+
+-- Laravel installation = 
+
+ 1] Global insatallation =
+     
+      - composer global require laravel/installer
+      - laravel new example-app    (example-app == name of project)
+
+ 2] Per Project Installation
+ 
+     - composer create-project laravel/laravel example-app
+     - composer create-project --prefer-dist laravel/laravel Practice "10.*"   -> version 10  link
+
+** Laravel folder structure **
+
+1] Model Folder  = Database / SQL Queries Handling Files
+2] Controller Folder  = Business Logic Files
+3] View Folder = HTML Files
+4] Routing Folder = URL Defining Files 
+5] Assets Folder = Images / fonts / music / video files / css /js file
+    ( Public Folder ) 
+
+
+
+#] Route
+
+- Webpage URL
+- APIs URL
+
+- Pure PHP == http://localhost/pages/about.php    -> Not Secure
+- Laravel  == http://localhost/about  -> Here in backside about is not a name of file  , name is suppose hello.php  , just any name   " about == Route Name "
+
+  --     hello.php == (view file / controller file )
+
+
+
+
+
+Route :: get('/about', function () {
+
+            return view ('hello')
+
+})
+
+-- We can define our all routes in a web.php file.
+-------------------------------------------------------------------------------------------
+1] Example - 1:
+
+Route::get('/onkar', function () {
+    return view('ankush');
+});
+
+// Above code  file name is "ankush"  and path name is onkar , so in url add "/onkar"
+
+-----------------------------------------------------------------------------------------
+
+2] Example - 2:
+
+Route::get('/onkar', function () {
+    return "<h1>Hello Direct add html here</h1>";
+});
+
+------------------------------------------------------------------------------------------
+
+3] Example - 3:
+
+
+Route::view('/onkar' , 'ankush');
+
+-------------------------------------------------------------------------------------------
+
+
+-- Anchor tag 
+
+     <a href="/do">Try page</a>      --  Here add Route Name   
+
+
+Route::get('/do', function () {
+    return view('try');
+});
+
+-- Route Paarameter
+
+http://localhost/post/10
+http://localhost/post/onkar
+
+------------------------------------------------------
+Route::get('/onkar/{id}' , function (string $id) {
+
+return 'User'.$id;
+
+})
+--------------------------------------------------------
+
+
+-- Laravel Route Constraints --
+
+http://localhost/do/10   --> whereNumber('id)
+http://localhost/do/onkar  --> whereAlpha('name')
+http://localhost/do/onkar2221 --> whereAlphaNumeric('name')
+http://localhost/do/song --> whereln('category' , ['movie','song'])
+http://localhost/do/@2221  --> where ('id' , '[@0-9]+')
+                                               (Regular expression)
+
+
+
+Route::get('/post/{id}',function(string $value){
+
+return 'user' .$value;
+
+})->whereNumber('id');
+
+
+---------------------------------------------------------------------
+
+-- Laravel Named Routes --
+
+If we are changing the name of route , that time there is no need to change  this name to all file . 
+
+ex.
+  http://localhost/page/about 
+
+Route::get('/page/about-us', function(){
+return 'About Page';
+})->name('about')
+
+
+if  I have 3 page in that 3 anchor tag  , i am suddenly change the name of the route,  "about"  to "about-us".
+
+
+
+Route::get('/about-first', function () {
+    return view('first');
+})->name('one');
+
+Route::get('/about-second', function () {
+    return view('second');
+})->name('two');
+
+Route::get('/about-third', function () {
+    return view('third');
+})->name('three');
+
+
+
+first.blade.php -- 
+
+<h1>First page </h1>                                 
+
+<a href="{{route('two') }}">Second</a>
+<a href="{{ route('three') }}">third</a>
+
+
+second.blade.php  --
+
+<h1>Second page </h1>
+
+<a href="{{ route('one') }}">first</a>
+<a href="{{route('three') }}">third</a>
+
+
+third.blade.php --
+
+<h1>Third page </h1>
+
+<a href="{{ route('one') }}">first</a>
+<a href="{{route('two') }}">Second</a>
+
+
+
+-------------------------------------------------------------------------------------------
+
+
+--  Laravel Route Groups  --
+
+Route::get('page/post/1',function(){})
+Route::get('page/about/',function(){})
+Route::get('page/gallery/',function(){})
+
+--  Here we are writing every time page instead of this we do group  ->
+
+
+Route::prefix('page')->group(function(){
+
+Route::get('/post/1',function(){})
+Route::get('/about/',function(){})       --> http://localhost/page//about
+Route::get('/gallery/',function(){})
+
+})
+
+----------------------------------------------------------------------------
+
+
+-- fallback  Method  == this method is used if user is add incorrect path. 
+
+           Route::fallback(function(){
+                 return "<h1>Page Not Found. Please write correct path. </h1>";
+               });
+
+In my project if any one file is not exist that time instead of show 404  error , i am using this method. 
+
+
+-----------------------------------------------------------------------------------------------
+
+# CRUD operation purpose
+
+(Insert data)
+
+Step1] --
+php artisan make:model PersonalInformation -m   ->  You can then run php artisan migrate to create the PersonalInformation table in the database.
+
+Step2] Create databse in phpMyAdmin
+
+Step3] --
+php artisan migrate     ->  to create table in databse
+
+Step4]  --
+php artisan make:controller HospitalController   ->  
+
+- The command php artisan make:controller HospitalController in Laravel is used to generate a  new controller class named HospitalController.
+
+-  php artisan make:controller HospitalController is a Laravel command that simplifies the creation of new controller classes, promoting clean and organized code structure in your application.
+
+------------------------------------------------------------------------------------------
+
+
+-- Laravel Blade Template --
+
+
+Blade Template -> Template Engine Based on PHP -> Blade provide a clean & Convenient wa to create views in Laravel.
+
+- Benefits == Create Dynamic & Reusable Templates   HTML & PHP
+
+Syntax --
+
+[Core PHP]                                [Blade]
+
+<?php
+      echo "hello"                  -->     {{"Hello"}}
+?>
+
+
+<?php
+      echo $name                    -->     {{$name}}
+?>
+
+
+<?php
+      echo "<h1>Hello</h1>"          -->    {!! "<h1>Hello</h1>" !!}
+?>
+
+
+<?php                       @php
+
+               -->          @endphp
+?>
+
+
+
+<?php                       
+
+     //Comment          -->         {--Comment--}
+?>
+
+
+
+
+If Else --
+
+<?php                             @if()
+
+if(){
+ 
+}elseif(){                        @elseif()
+
+}else{                            @else
+
+}                                 @endif
+
+?>
+------------------------------------------------------------------------------
+Loop -- 
+
+@for($i = 0 ; $i < 10 ; $i++)
+
+   //
+@endfor
+
+-------------------------------------------
+@foreach($user as $user)
+<P> This is user {{ $user }} </p>
+@endforeach
+
+-------------------------------------------
+@while(condition)
+
+   //
+@endwhile
+
+-------------------------------------------
+@forelse($user as $user)
+    
+<li> {{ $user->name}}</li>
+
+@emty
+
+<p> No User </p>
+
+@endforelse
+
+-------------------------------------------
+
+@continue
+
+@break
+
+-----------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
